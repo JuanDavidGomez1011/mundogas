@@ -80,9 +80,9 @@ export const businessData: BusinessData = {
     phoneNumbers: [
       { label: 'Celular / WhatsApp Principal', number: '313 6076305', whatsappFormatted: '+573136076305', isWhatsApp: true },
       { label: 'Celular de Soporte', number: '310 4656411', whatsappFormatted: '+573104656411', isWhatsApp: true },
-      { label: 'Teléfono Fijo', number: '8730106', whatsappFormatted: '', isWhatsApp: false }
+      { label: 'Teléfono Fijo', number: '3729561', whatsappFormatted: '', isWhatsApp: false }
     ],
-    emails: ['almacenmundogas@yahoo.es', 'mundogasmanizales@gmail.com'],
+    emails: ['almacenmundogas25@gmail.com'],
     address: {
       street: 'Calle 25 #21-43',
       neighborhood: 'Centro',
@@ -98,9 +98,9 @@ export const businessData: BusinessData = {
       id: 'venta',
       title: 'Modelos y Marcas Diversas',
       shortDescription: 'Contamos con una selección impresionante de calentadores a gas de las mejores marcas del mercado.',
-      fullDescription: 'En Mundo Gas te ofrecemos un amplio portafolio de calentadores de marcas líderes mundiales como Bosch, Classic, Mabe y más. Encontrarás calentadores de tiro natural, tiro forzado y de acumulación, adaptados a la presión de agua de tu hogar y con capacidades desde 5.5 litros hasta 20 litros.',
+      fullDescription: 'En Mundo Gas te ofrecemos un amplio portafolio de calentadores de marcas líderes mundiales como Bosch, Clasic, Challenger y más. Encontrarás calentadores de tiro natural, tiro forzado y de acumulación, adaptados a la presión de agua de tu hogar y con capacidades desde 5.5 litros hasta 20 litros.',
       iconName: 'Flame',
-      highlights: ['Calentadores Bosch y Classic originales', 'Garantía directa de fábrica', 'Asesoría experta para elegir la capacidad correcta']
+      highlights: ['Calentadores Bosch y Clasic originales', 'Garantía directa de fábrica', 'Asesoría experta para elegir la capacidad correcta']
     },
     {
       id: 'instalacion',
@@ -116,7 +116,15 @@ export const businessData: BusinessData = {
       shortDescription: 'Cuidado preventivo y correctivo para prolongar la vida útil de tu equipo y asegurar su eficiencia.',
       fullDescription: '¿Tu calentador no calienta como antes, arroja llama amarilla o tiene apagones repentinos? Realizamos mantenimiento preventivo completo (limpieza de quemadores, calibración de sensores, revisión de válvula de gas y cambio de baterías) y reparación técnica experta con repuestos 100% originales.',
       iconName: 'Wrench',
-      highlights: ['Mantenimiento preventivo anual', 'Diagnóstico preciso de fallas', 'Repuestos originales Bosch, Classic y multimarca']
+      highlights: ['Mantenimiento preventivo anual', 'Diagnóstico preciso de fallas', 'Repuestos originales Bosch, Clasic y multimarca']
+    },
+    {
+      id: 'redes-chimeneas',
+      title: 'Redes y Chimeneas a Gas',
+      shortDescription: 'Instalación de redes de gas y chimeneas a gas (directas, conteo remoto) o alcohol.',
+      fullDescription: 'Expertos en diseño e instalación de redes de gas residenciales y comerciales. Además, instalamos y realizamos mantenimiento a chimeneas a gas (directas y de conteo remoto) y modernas chimeneas en alcohol. Soluciones seguras y estéticas para su hogar.',
+      iconName: 'Flame',
+      highlights: ['Redes de gas', 'Chimeneas a gas (directas y conteo remoto)', 'Chimeneas en alcohol']
     }
   ],
   posts: [
@@ -133,16 +141,16 @@ export const businessData: BusinessData = {
       tags: ['MundoGas', 'CalentadoresAGas', 'BoschManizales', 'CalefaccionEficiente']
     },
     {
-      id: 'post-classic',
-      brand: 'Classic',
-      title: 'Línea de Calentadores Classic - Excelente calidad y precio',
-      content: '¿Buscas una opción duradera, eficiente y que se ajuste a tu presupuesto? Los calentadores a gas Classic son ideales para el clima de Manizales. Diseñados para trabajar con baja presión de agua, ideales para apartamentos o zonas altas. Cuenta con doble sensor de seguridad y encendido electrónico automático. Visítanos en la Calle 25 #21-43 Centro y con gusto te asesoramos.',
+      id: 'post-clasic',
+      brand: 'Clasic',
+      title: 'Línea de Calentadores Clasic - Excelente calidad y precio',
+      content: '¿Buscas una opción duradera, eficiente y que se ajuste a tu presupuesto? Los calentadores a gas Clasic son ideales para el clima de Manizales. Diseñados para trabajar con baja presión de agua, ideales para apartamentos o zonas altas. Cuenta con doble sensor de seguridad y encendido electrónico automático. Visítanos en la Calle 25 #21-43 Centro y con gusto te asesoramos.',
       imageUrl: '/images/heater_classic.jpg',
       date: 'Hace 5 días',
       likes: 89,
       commentsCount: 9,
       shares: 4,
-      tags: ['MundoGas', 'CalentadoresClassic', 'HogarCalentito', 'Manizales']
+      tags: ['MundoGas', 'CalentadoresClasic', 'HogarCalentito', 'Manizales']
     },
     {
       id: 'post-mantenimiento',

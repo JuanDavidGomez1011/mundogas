@@ -208,7 +208,7 @@ export const Gallery: React.FC = () => {
                             <li className="flex items-center gap-2"><ChevronRight className="h-3 w-3 text-cyan-600" /> Display digital inteligente</li>
                           </>
                         )}
-                        {selectedPost.brand === 'Classic' && (
+                        {selectedPost.brand === 'Clasic' && (
                           <>
                             <li className="flex items-center gap-2"><ChevronRight className="h-3 w-3 text-cyan-600" /> Encendido electrónico de baja presión</li>
                             <li className="flex items-center gap-2"><ChevronRight className="h-3 w-3 text-cyan-600" /> Válvula de seguridad por sobrepresión</li>

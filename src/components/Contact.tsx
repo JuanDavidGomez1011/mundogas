@@ -244,7 +244,7 @@ export const Contact: React.FC = () => {
                     >
                       <option value="General">Asesoría General</option>
                       <option value="Calentador Bosch">Calentador Bosch (Paso/Digital)</option>
-                      <option value="Calentador Classic">Calentador Classic (Baja Presión)</option>
+                      <option value="Calentador Clasic">Calentador Clasic (Baja Presión)</option>
                       <option value="Instalación Profesional">Instalación Certificada</option>
                       <option value="Otro">Otro Calentador / Emergencia</option>
                     </select>

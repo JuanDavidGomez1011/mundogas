@@ -19,7 +19,7 @@ function App() {
         {/* Sección de Servicios: Venta, Instalación y Mantenimiento */}
         <Services />
 
-        {/* Vitrina de Equipos: Novedades Bosch y Classic */}
+        {/* Vitrina de Equipos: Novedades Bosch y Clasic */}
         <Gallery />
 
         {/* Canales de Contacto, Formulario y Horarios Colombia */}

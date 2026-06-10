@@ -113,7 +113,7 @@ export const Hero: React.FC = () => {
                   <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 shrink-0 font-bold">1</div>
                   <div>
                     <h4 className="text-sm font-bold text-slate-900">Equipos de Alta Gama</h4>
-                    <p className="text-xs text-slate-500">Modelos Bosch, Classic y Mabe listos para despacho inmediato.</p>
+                    <p className="text-xs text-slate-500">Modelos Bosch, Clasic y Challenger listos para despacho inmediato.</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3 rounded-2xl bg-slate-50/50 p-4 border border-slate-100 hover:bg-slate-50 transition-colors">
