@@ -157,7 +157,7 @@ export const businessData: BusinessData = {
       brand: 'Servicio Técnico',
       title: '¿Llama amarilla en tu calentador? ¡Cuidado!',
       content: 'Un calentador con llama amarilla o roja es señal de mala combustión y acumulación de monóxido de carbono ⚠️. La llama en tu calentador siempre debe ser azul vibrante. Evita riesgos de salud y aumenta la vida útil de tu calentador realizando tu mantenimiento preventivo anual con Mundo Gas. Contamos con técnicos certificados listos para visitarte en Manizales y municipios aledaños.',
-      imageUrl: '/images/maintenance_service.jpg',
+      imageUrl: '/images/maintenance_service.png',
       date: 'Hace 1 semana',
       likes: 156,
       commentsCount: 22,
