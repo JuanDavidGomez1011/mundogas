@@ -7,9 +7,9 @@ interface LogoProps {
 
 export const Logo: React.FC<LogoProps> = ({ className = 'h-10 w-10' }) => {
   return (
-    <div className="flex items-center gap-2 select-none">
+    <div className="flex items-center justify-center select-none">
       <img 
-        src="/logo.jpg" 
+        src="/logo.png" 
         alt="Mundo Gas Logo" 
         className={`${className} object-contain`}
       />

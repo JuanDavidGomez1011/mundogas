@@ -16,11 +16,11 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="bg-slate-950 text-slate-400 border-t border-slate-900 pt-16 pb-8 transition-colors duration-300">
+    <footer className="bg-[#081B45] text-slate-300 border-t border-blue-900/50 pt-16 pb-8 transition-colors duration-300">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         
         {/* Main Footer Links section */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 pb-12 border-b border-slate-900">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 pb-12 border-b border-blue-900/40">
           
           {/* Column 1: Logo & Brand Pitch */}
           <div className="space-y-4 md:col-span-1">
@@ -29,7 +29,7 @@ export const Footer: React.FC = () => {
               {businessData.slogan} <br />
               Brindando calidez, confort y seguridad técnica a los hogares de Manizales durante más de {businessData.experienceYears} años.
             </p>
-            <div className="flex items-center gap-2 text-xs text-emerald-500 font-semibold bg-emerald-950/20 border border-emerald-900/30 rounded-xl px-3.5 py-1.5 w-fit">
+            <div className="flex items-center gap-2 text-xs text-emerald-400 font-semibold bg-emerald-950/30 border border-emerald-900/40 rounded-xl px-3.5 py-1.5 w-fit">
               <Shield className="h-4 w-4" />
               <span>Instalación Garantizada</span>
             </div>
@@ -145,7 +145,7 @@ export const Footer: React.FC = () => {
           {/* Scroll to Top */}
           <button
             onClick={handleScrollToTop}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800 transition-all cursor-pointer shadow-lg"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#153A8A] border border-blue-800/50 text-slate-400 hover:text-white hover:bg-[#1A45A0] transition-all cursor-pointer shadow-lg"
             title="Volver arriba"
           >
             <ArrowUp className="h-5 w-5" />

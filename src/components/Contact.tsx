@@ -49,19 +49,19 @@ export const Contact: React.FC = () => {
   };
 
   return (
-    <section id="contacto" className="bg-slate-50 py-24 scroll-mt-16 transition-colors duration-300">
+    <section id="contacto" className="bg-[#0D2A6B] py-24 scroll-mt-16 transition-colors duration-300">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <span className="text-sm font-bold tracking-widest text-emerald-600 uppercase">
+          <span className="text-sm font-bold tracking-widest text-emerald-400 uppercase">
             Hablemos Hoy
           </span>
-          <h2 className="text-3xl font-extrabold text-slate-900 sm:text-4xl">
+          <h2 className="text-3xl font-extrabold text-white sm:text-4xl">
             Ponte en Contacto con Nosotros
           </h2>
           <div className="h-1 w-20 bg-cyan-500 mx-auto rounded-full" />
-          <p className="text-slate-600 text-lg">
+          <p className="text-slate-200 text-lg">
             ¿Tienes dudas sobre instalación, fallas en tu calentador o deseas comprar uno nuevo? Visítanos, llámanos o escríbenos a través del formulario.
           </p>
         </div>
@@ -71,13 +71,13 @@ export const Contact: React.FC = () => {
           <div className="lg:col-span-5 space-y-6">
             
             {/* Quick Contact Box */}
-            <div className="rounded-3xl bg-white p-8 shadow-md border border-slate-100">
-              <h3 className="text-xl font-bold text-slate-900 mb-6">Información de Contacto</h3>
+            <div className="rounded-3xl bg-[#0D2A6B] p-8 border border-white/15 shadow-[0_10px_30px_rgba(0,0,0,0.4)]">
+              <h3 className="text-xl font-bold text-white mb-6">Información de Contacto</h3>
               
               <div className="space-y-6">
                 {/* Phone numbers */}
                 <div className="flex gap-4">
-                  <div className="h-11 w-11 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center shrink-0">
+                  <div className="h-11 w-11 rounded-xl bg-[#153A8A] text-[#FFD700] flex items-center justify-center shrink-0">
                     <Phone className="h-5 w-5" />
                   </div>
                   <div>
@@ -89,11 +89,11 @@ export const Contact: React.FC = () => {
                             href={phoneItem.isWhatsApp ? `https://wa.me/${phoneItem.whatsappFormatted.replace('+', '')}` : `tel:${phoneItem.number}`}
                             target={phoneItem.isWhatsApp ? '_blank' : '_self'}
                             rel="noopener noreferrer"
-                            className="text-slate-700 text-sm font-semibold hover:text-cyan-600 transition-colors"
+                            className="text-slate-200 text-sm font-semibold hover:text-[#FFD700] transition-colors"
                           >
                             {phoneItem.number}
                           </a>
-                          <span className="text-[10px] text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">
+                          <span className="text-[10px] text-slate-300 bg-[#153A8A] px-1.5 py-0.5 rounded">
                             {phoneItem.label.split(' ')[0]}
                           </span>
                         </div>
@@ -104,7 +104,7 @@ export const Contact: React.FC = () => {
 
                 {/* Emails */}
                 <div className="flex gap-4">
-                  <div className="h-11 w-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                  <div className="h-11 w-11 rounded-xl bg-[#153A8A] text-[#00E676] flex items-center justify-center shrink-0">
                     <Mail className="h-5 w-5" />
                   </div>
                   <div>
@@ -114,7 +114,7 @@ export const Contact: React.FC = () => {
                         <a
                           key={idx}
                           href={`mailto:${email}`}
-                          className="block text-slate-700 text-sm font-semibold hover:text-emerald-600 transition-colors"
+                          className="block text-slate-200 text-sm font-semibold hover:text-[#00E676] transition-colors"
                         >
                           {email}
                         </a>
@@ -125,12 +125,12 @@ export const Contact: React.FC = () => {
 
                 {/* Address */}
                 <div className="flex gap-4">
-                  <div className="h-11 w-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                  <div className="h-11 w-11 rounded-xl bg-[#153A8A] text-[#FFD700] flex items-center justify-center shrink-0">
                     <MapPin className="h-5 w-5" />
                   </div>
                   <div>
                     <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Dirección Física</h4>
-                    <p className="mt-1 text-slate-700 text-sm font-semibold">
+                    <p className="mt-1 text-slate-200 text-sm font-semibold">
                       {businessData.contact.address.street}, {businessData.contact.address.neighborhood}
                     </p>
                     <p className="text-xs text-slate-400">
@@ -138,18 +138,33 @@ export const Contact: React.FC = () => {
                     </p>
                   </div>
                 </div>
+
+                {/* Redes Sociales */}
+                <div className="flex gap-4">
+                  <div className="h-11 w-11 rounded-xl bg-[#153A8A] text-[#FFD700] flex items-center justify-center shrink-0">
+                    <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/></svg>
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Redes Sociales</h4>
+                    <div className="mt-1">
+                      <a href="https://www.facebook.com/MundoGasManizales" target="_blank" rel="noopener noreferrer" className="text-slate-200 text-sm font-semibold hover:text-[#FFD700] transition-colors">
+                        Facebook Mundo Gas
+                      </a>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
             {/* Time schedule panel */}
-            <div className="rounded-3xl bg-white p-8 shadow-md border border-slate-100 space-y-6">
+            <div className="rounded-3xl bg-[#0D2A6B] p-8 border border-white/15 shadow-[0_10px_30px_rgba(0,0,0,0.4)] space-y-6">
               
               {/* Dynamic opening status */}
               <div
                 className={`rounded-2xl p-4 flex items-center gap-3 border ${
                   status.isOpen
-                    ? 'bg-emerald-50 border-emerald-100'
-                    : 'bg-rose-50 border-rose-100'
+                    ? 'bg-[#153A8A] border-white/10'
+                    : 'bg-rose-900/30 border-rose-800/50'
                 }`}
               >
                 <span className="relative flex h-3.5 w-3.5 shrink-0">
@@ -159,10 +174,10 @@ export const Contact: React.FC = () => {
                   <span className={`relative inline-flex rounded-full h-3.5 w-3.5 ${status.isOpen ? 'bg-emerald-500' : 'bg-rose-500'}`} />
                 </span>
                 <div>
-                  <span className={`block font-bold text-sm ${status.isOpen ? 'text-emerald-700' : 'text-rose-700'}`}>
+                  <span className={`block font-bold text-sm ${status.isOpen ? 'text-[#00E676]' : 'text-rose-400'}`}>
                     {status.message}
                   </span>
-                  <span className="text-xs text-slate-500">
+                  <span className="text-xs text-slate-300">
                     {status.nextStatusChange}
                   </span>
                 </div>
@@ -170,17 +185,17 @@ export const Contact: React.FC = () => {
 
               {/* Schedule listing */}
               <div className="space-y-4">
-                <div className="flex items-center gap-2 text-slate-900">
-                  <Clock className="h-5 w-5 text-slate-400" />
+                <div className="flex items-center gap-2 text-white">
+                  <Clock className="h-5 w-5 text-[#FFD700]" />
                   <span className="font-bold text-sm">Horario de Atención</span>
                 </div>
 
-                <div className="space-y-3 pt-2 text-sm text-slate-600">
-                  <div className="flex justify-between border-b border-slate-100 pb-2">
+                <div className="space-y-3 pt-2 text-sm text-slate-300">
+                  <div className="flex justify-between border-b border-white/15 pb-2">
                     <span className="font-medium">Lunes a Viernes</span>
                     <span className="font-bold">08:00 AM - 12:30 PM y 02:00 PM - 06:00 PM</span>
                   </div>
-                  <div className="flex justify-between border-b border-slate-100 pb-2">
+                  <div className="flex justify-between border-b border-white/15 pb-2">
                     <span className="font-medium">Sábados</span>
                     <span className="font-bold">08:00 AM - 01:30 PM</span>
                   </div>
@@ -197,14 +212,14 @@ export const Contact: React.FC = () => {
           <div className="lg:col-span-7 space-y-6">
             
             {/* Form */}
-            <div className="rounded-3xl bg-white p-8 shadow-md border border-slate-100">
-              <h3 className="text-xl font-bold text-slate-900 mb-6">Cotiza o Agenda tu Visita</h3>
+            <div className="rounded-3xl bg-[#0D2A6B] p-8 border border-white/15 shadow-[0_10px_30px_rgba(0,0,0,0.4)]">
+              <h3 className="text-xl font-bold text-white mb-6">Cotiza o Agenda tu Visita</h3>
               
               {submitted ? (
-                <div className="rounded-2xl bg-emerald-50 border border-emerald-100 p-8 text-center space-y-4">
-                  <CheckCircle className="h-16 w-16 text-emerald-500 mx-auto animate-bounce" />
-                  <h4 className="text-xl font-bold text-emerald-700">¡Mensaje Preparado!</h4>
-                  <p className="text-sm text-slate-500 max-w-sm mx-auto">
+                <div className="rounded-2xl bg-[#153A8A] border border-white/10 p-8 text-center space-y-4">
+                  <CheckCircle className="h-16 w-16 text-[#00E676] mx-auto animate-bounce" />
+                  <h4 className="text-xl font-bold text-[#00E676]">¡Mensaje Preparado!</h4>
+                  <p className="text-sm text-slate-300 max-w-sm mx-auto">
                     Hemos abierto WhatsApp para que envíes tu solicitud. Estaremos listos para responderte en breve.
                   </p>
                 </div>
@@ -219,7 +234,7 @@ export const Contact: React.FC = () => {
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         placeholder="Ej. Juan Pérez"
-                        className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 text-sm focus:border-cyan-500 focus:outline-none transition-colors"
+                        className="w-full rounded-xl border border-white/10 bg-[#153A8A] px-4 py-3 text-white text-sm focus:border-cyan-500 focus:outline-none transition-colors"
                       />
                     </div>
                     <div>
@@ -230,18 +245,18 @@ export const Contact: React.FC = () => {
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         placeholder="Ej. 313 1234567"
-                        className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 text-sm focus:border-cyan-500 focus:outline-none transition-colors"
+                        className="w-full rounded-xl border border-white/10 bg-[#153A8A] px-4 py-3 text-white text-sm focus:border-cyan-500 focus:outline-none transition-colors"
                       />
                     </div>
                   </div>
 
                   <div>
                     <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Servicio / Equipo de Interés</label>
-                    <select
-                      value={interest}
-                      onChange={(e) => setInterest(e.target.value)}
-                      className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 text-sm focus:border-cyan-500 focus:outline-none transition-colors"
-                    >
+                      <select
+                        value={interest}
+                        onChange={(e) => setInterest(e.target.value)}
+                        className="w-full rounded-xl border border-white/10 bg-[#153A8A] px-4 py-3 text-white text-sm focus:border-cyan-500 focus:outline-none transition-colors"
+                      >
                       <option value="General">Asesoría General</option>
                       <option value="Calentador Bosch">Calentador Bosch (Paso/Digital)</option>
                       <option value="Calentador Clasic">Calentador Clasic (Baja Presión)</option>
@@ -252,13 +267,13 @@ export const Contact: React.FC = () => {
 
                   <div>
                     <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Mensaje / Comentarios</label>
-                    <textarea
-                      rows={4}
-                      value={message}
-                      onChange={(e) => setMessage(e.target.value)}
-                      placeholder="Descríbenos tu necesidad (Ej. El calentador se apaga solo, busco calentador para 2 duchas...)"
-                      className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 text-sm focus:border-cyan-500 focus:outline-none transition-colors resize-none"
-                    />
+                      <textarea
+                        rows={4}
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        placeholder="Descríbenos tu necesidad (Ej. El calentador se apaga solo, busco calentador para 2 duchas...)"
+                        className="w-full rounded-xl border border-white/10 bg-[#153A8A] px-4 py-3 text-white text-sm focus:border-cyan-500 focus:outline-none transition-colors resize-none"
+                      />
                   </div>
 
                   <button
@@ -273,52 +288,52 @@ export const Contact: React.FC = () => {
             </div>
 
             {/* Stylized map card */}
-            <div className="rounded-3xl bg-white p-6 shadow-md border border-slate-200/80 flex flex-col justify-between space-y-4">
+            <div className="rounded-3xl bg-[#0D2A6B] p-6 border border-white/15 shadow-[0_10px_30px_rgba(0,0,0,0.4)] flex flex-col justify-between space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <h4 className="font-bold text-slate-900 text-base">Ubicación de Mundo Gas</h4>
-                  <p className="text-xs text-slate-500">Calle 25 #21-43 Centro, Manizales, Caldas</p>
+                  <h4 className="font-bold text-white text-base">Ubicación de Mundo Gas</h4>
+                  <p className="text-xs text-slate-300">Calle 25 #21-43 Centro, Manizales, Caldas</p>
                 </div>
                 <a
                   href={businessData.contact.address.googleMapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-xl bg-slate-50 hover:bg-slate-100 text-cyan-600 border border-slate-200 hover:border-slate-300 px-3.5 py-1.5 text-xs font-bold transition-all duration-300"
+                  className="rounded-xl bg-[#153A8A] hover:bg-[#1A45A0] text-[#FFD700] border border-white/10 hover:border-white/30 px-3.5 py-1.5 text-xs font-bold transition-all duration-300"
                 >
                   Abrir en Google Maps
                 </a>
               </div>
 
               {/* Styled SVG Map of Manizales center grid */}
-              <div className="h-48 rounded-2xl bg-slate-100/60 relative overflow-hidden border border-slate-200/80 flex items-center justify-center">
+              <div className="h-48 rounded-2xl bg-[#153A8A]/50 relative overflow-hidden border border-white/10 flex items-center justify-center">
                 {/* SVG City Roads Illustration */}
                 <svg className="absolute inset-0 h-full w-full opacity-45" viewBox="0 0 400 200" fill="none">
                   {/* Streets (horizontal) */}
-                  <line x1="0" y1="30" x2="400" y2="30" stroke="#cbd5e1" strokeWidth="2" />
-                  <line x1="0" y1="70" x2="400" y2="70" stroke="#cbd5e1" strokeWidth="2" />
-                  <line x1="0" y1="110" x2="400" y2="110" stroke="#94a3b8" strokeWidth="3" /> {/* Carrera 21/Main avenue */}
-                  <line x1="0" y1="150" x2="400" y2="150" stroke="#cbd5e1" strokeWidth="2" />
+                  <line x1="0" y1="30" x2="400" y2="30" stroke="#1e3a8a" strokeWidth="2" />
+                  <line x1="0" y1="70" x2="400" y2="70" stroke="#1e3a8a" strokeWidth="2" />
+                  <line x1="0" y1="110" x2="400" y2="110" stroke="#2563eb" strokeWidth="3" /> {/* Carrera 21/Main avenue */}
+                  <line x1="0" y1="150" x2="400" y2="150" stroke="#1e3a8a" strokeWidth="2" />
 
                   {/* Calles (vertical) */}
-                  <line x1="40" y1="0" x2="40" y2="200" stroke="#cbd5e1" strokeWidth="2" />
-                  <line x1="120" y1="0" x2="120" y2="200" stroke="#cbd5e1" strokeWidth="2" />
-                  <line x1="200" y1="0" x2="200" y2="200" stroke="#94a3b8" strokeWidth="3" /> {/* Calle 25/Our Street */}
-                  <line x1="280" y1="0" x2="280" y2="200" stroke="#cbd5e1" strokeWidth="2" />
-                  <line x1="360" y1="0" x2="360" y2="200" stroke="#cbd5e1" strokeWidth="2" />
+                  <line x1="40" y1="0" x2="40" y2="200" stroke="#1e3a8a" strokeWidth="2" />
+                  <line x1="120" y1="0" x2="120" y2="200" stroke="#1e3a8a" strokeWidth="2" />
+                  <line x1="200" y1="0" x2="200" y2="200" stroke="#2563eb" strokeWidth="3" /> {/* Calle 25/Our Street */}
+                  <line x1="280" y1="0" x2="280" y2="200" stroke="#1e3a8a" strokeWidth="2" />
+                  <line x1="360" y1="0" x2="360" y2="200" stroke="#1e3a8a" strokeWidth="2" />
 
                   {/* Neighborhood landmarks block highlights */}
-                  <rect x="125" y="75" width="70" height="30" rx="3" fill="#e2e8f0" />
-                  <text x="160" y="93" fill="#475569" fontSize="8" fontWeight="bold" textAnchor="middle">Plaza Bolívar</text>
+                  <rect x="125" y="75" width="70" height="30" rx="3" fill="#153A8A" />
+                  <text x="160" y="93" fill="#94a3b8" fontSize="8" fontWeight="bold" textAnchor="middle">Plaza Bolívar</text>
                   
-                  <rect x="205" y="75" width="70" height="30" rx="3" fill="#e2e8f0" />
-                  <text x="240" y="93" fill="#475569" fontSize="8" fontWeight="bold" textAnchor="middle">Centro</text>
+                  <rect x="205" y="75" width="70" height="30" rx="3" fill="#153A8A" />
+                  <text x="240" y="93" fill="#94a3b8" fontSize="8" fontWeight="bold" textAnchor="middle">Centro</text>
                 </svg>
 
                 {/* Target Intersection Label */}
-                <div className="absolute top-[88px] left-[155px] text-[9px] font-bold text-slate-500 rotate-[-90deg]">
+                <div className="absolute top-[88px] left-[155px] text-[9px] font-bold text-[#FFD700] rotate-[-90deg]">
                   Calle 25
                 </div>
-                <div className="absolute top-[114px] left-[220px] text-[9px] font-bold text-slate-500">
+                <div className="absolute top-[114px] left-[220px] text-[9px] font-bold text-[#FFD700]">
                   Carrera 21
                 </div>
 
@@ -336,7 +351,7 @@ export const Contact: React.FC = () => {
                 </div>
 
                 {/* Grid Overlay Compass */}
-                <div className="absolute bottom-2 right-2 text-[10px] text-slate-500 bg-white/80 px-2 py-0.5 rounded border border-slate-200">
+                <div className="absolute bottom-2 right-2 text-[10px] text-[#FFD700] bg-[#153A8A]/80 px-2 py-0.5 rounded border border-white/10">
                   N ↑
                 </div>
               </div>
