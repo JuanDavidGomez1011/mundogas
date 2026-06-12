@@ -88,6 +88,42 @@ export const Services: React.FC = () => {
           })}
         </div>
 
+        {/* Full Services & Categories List */}
+        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-12 bg-white p-8 md:p-12 rounded-3xl shadow-md border border-slate-100">
+          <div>
+            <h3 className="text-2xl font-bold text-slate-900 mb-8 flex items-center gap-3">
+              <div className="p-2 bg-cyan-50 rounded-xl">
+                <Wrench className="h-6 w-6 text-cyan-600" />
+              </div>
+              Catálogo de Servicios
+            </h3>
+            <ul className="space-y-4">
+              {businessData.allServices.map((item, i) => (
+                <li key={i} className="flex items-start gap-3 text-slate-700">
+                  <CheckCircle2 className="h-5 w-5 text-emerald-500 shrink-0 mt-0.5" />
+                  <span className="leading-relaxed">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h3 className="text-2xl font-bold text-slate-900 mb-8 flex items-center gap-3">
+              <div className="p-2 bg-cyan-50 rounded-xl">
+                <Flame className="h-6 w-6 text-cyan-600" />
+              </div>
+              Categorías de Productos
+            </h3>
+            <ul className="space-y-4">
+              {businessData.categories.map((cat, i) => (
+                <li key={i} className="flex items-start gap-3 text-slate-700">
+                  <CheckCircle2 className="h-5 w-5 text-emerald-500 shrink-0 mt-0.5" />
+                  <span className="leading-relaxed">{cat}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
         {/* Trust banner */}
         <div className="mt-16 rounded-3xl bg-gradient-to-r from-emerald-600 to-teal-500 p-8 md:p-12 shadow-lg text-white">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">

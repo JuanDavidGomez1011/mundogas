@@ -66,6 +66,8 @@ export interface BusinessData {
   whatsappPrimary: string;
   contact: ContactInfo;
   services: ServiceItem[];
+  allServices: string[];
+  categories: string[];
   posts: PostItem[];
   schedule: BusinessSchedule;
 }
@@ -126,6 +128,31 @@ export const businessData: BusinessData = {
       iconName: 'Flame',
       highlights: ['Redes de gas', 'Chimeneas a gas (directas y conteo remoto)', 'Chimeneas en alcohol']
     }
+  ],
+  allServices: [
+    'Venta de calentadores a gas.',
+    'Instalación de calentadores a gas.',
+    'Reparación de calentadores.',
+    'Mantenimiento preventivo y correctivo.',
+    'Venta de repuestos originales.',
+    'Redes internas de gas residenciales y comerciales.',
+    'Chimeneas a gas.',
+    'Chimeneas de alcohol.',
+    'Quemadores para estufas.',
+    'Ductos de evacuación.',
+    'Servicio técnico especializado.',
+    'Reparación de estufas y hornos a gas.',
+    'Asesoría técnica especializada.'
+  ],
+  categories: [
+    'Calentadores de paso',
+    'Calentadores de acumulación',
+    'Chimeneas a gas',
+    'Chimeneas de alcohol',
+    'Quemadores',
+    'Repuestos para calentadores',
+    'Accesorios para gas',
+    'Ductos de evacuación'
   ],
   posts: [
     {
