@@ -1,5 +1,6 @@
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
+import { PhotoGallery } from './components/PhotoGallery';
 import { Services } from './components/Services';
 import { Gallery } from './components/Gallery';
 import { Contact } from './components/Contact';
@@ -15,6 +16,9 @@ function App() {
       <main className="flex-grow">
         {/* Banner principal / Propuesta de Valor */}
         <Hero />
+
+        {/* Galería de fotos del negocio */}
+        <PhotoGallery />
 
         {/* Sección de Servicios: Venta, Instalación y Mantenimiento */}
         <Services />
