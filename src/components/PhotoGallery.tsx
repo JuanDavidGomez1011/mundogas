@@ -8,10 +8,10 @@ interface GalleryPhoto {
 }
 
 const photos: GalleryPhoto[] = [
-  { id: 1, src: '/images/foto_galeria_1.jpg', alt: 'Mundo Gas Manizales foto 1' },
-  { id: 2, src: '/images/foto_galeria_2.jpg', alt: 'Mundo Gas Manizales foto 2' },
-  { id: 3, src: '/images/foto_galeria_3.jpg', alt: 'Mundo Gas Manizales foto 3' },
-  { id: 4, src: '/images/foto_galeria_4.jpg', alt: 'Mundo Gas Manizales foto 4' },
+  { id: 1, src: '/images/foto_galeria_1.jpeg', alt: 'Mundo Gas Manizales foto 1' },
+  { id: 2, src: '/images/foto_galeria_2.jpeg', alt: 'Mundo Gas Manizales foto 2' },
+  { id: 3, src: '/images/foto_galeria_3.jpeg', alt: 'Mundo Gas Manizales foto 3' },
+  { id: 4, src: '/images/foto_galeria_4.jpeg', alt: 'Mundo Gas Manizales foto 4' },
 ];
 
 export const PhotoGallery: React.FC = () => {
