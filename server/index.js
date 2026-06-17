@@ -42,7 +42,7 @@ if (fs.existsSync(distDir)) {
   app.use(express.static(distDir));
 
   // Cualquier otra ruta no capturada por la API debe devolver el frontend index.html
-  app.get('*', (req, res, next) => {
+  app.get('/*', (req, res, next) => {
     if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
       return next();
     }
