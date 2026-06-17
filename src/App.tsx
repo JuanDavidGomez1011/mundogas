@@ -1,38 +1,23 @@
-import { Navbar } from './components/Navbar';
-import { Hero } from './components/Hero';
-import { PhotoGallery } from './components/PhotoGallery';
-import { Services } from './components/Services';
-import { Gallery } from './components/Gallery';
-import { Contact } from './components/Contact';
-import { Footer } from './components/Footer';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import { LandingPage } from './pages/LandingPage';
+import { LoginPage } from './pages/LoginPage';
+import { AdminPage } from './pages/AdminPage';
 
 function App() {
   return (
-    <div className="min-h-screen bg-[#004D40] text-slate-200 flex flex-col selection:bg-cyan-100 selection:text-cyan-900">
-      {/* Sticky Navigation Bar */}
-      <Navbar />
+    <AuthProvider>
+      <Router>
+        <Routes>
+          {/* Ruta de la landing principal con el catálogo integrado */}
+          <Route path="/" element={<LandingPage />} />
 
-      {/* Main Sections */}
-      <main className="flex-grow">
-        {/* Banner principal / Propuesta de Valor */}
-        <Hero />
-
-        {/* Galería de fotos del negocio */}
-        <PhotoGallery />
-
-        {/* Sección de Servicios: Venta, Instalación y Mantenimiento */}
-        <Services />
-
-        {/* Vitrina de Equipos: Novedades Bosch y Clasic */}
-        <Gallery />
-
-        {/* Canales de Contacto, Formulario y Horarios Colombia */}
-        <Contact />
-      </main>
-
-      {/* Footer de Cierre y Cumplimiento Normativo */}
-      <Footer />
-    </div>
+          {/* Rutas administrativas separadas */}
+          <Route path="/admin/login" element={<LoginPage />} />
+          <Route path="/admin" element={<AdminPage />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 

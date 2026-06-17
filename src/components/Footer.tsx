@@ -1,7 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Logo } from './Logo';
 import { businessData } from '../data/businessData';
-import { ArrowUp, Phone, Shield, ExternalLink } from 'lucide-react';
+import { ArrowUp, Phone, Shield, ExternalLink, Settings } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   const handleScrollToTop = () => {
@@ -140,6 +141,15 @@ export const Footer: React.FC = () => {
             <p className="text-[10px] text-slate-600 max-w-md">
               Aviso: Todo servicio de gas natural cumple con la Norma Técnica Colombiana (NTC) aplicable y es ejecutado por personal idóneo.
             </p>
+            <div className="pt-2">
+              <Link
+                to="/admin"
+                className="inline-flex items-center gap-1.5 text-slate-600 hover:text-amber-400 transition-colors text-[10px] font-semibold"
+              >
+                <Settings className="h-3 w-3" />
+                <span>Ingresar como admin</span>
+              </Link>
+            </div>
           </div>
           
           {/* Scroll to Top */}
