@@ -5,14 +5,14 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 
+dotenv.config();
+
 // Importar base de datos para inicializarla
 import './db/database.js';
 
 // Importar rutas
 import authRoutes from './routes/auth.js';
 import productRoutes from './routes/products.js';
-
-dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -32,7 +32,7 @@ if (!fs.existsSync(uploadsDir)) {
 }
 app.use('/uploads', express.static(uploadsDir));
 
-// Rutas API
+// Rutas API (deben ir ANTES del static del frontend)
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 
@@ -41,17 +41,15 @@ const distDir = path.resolve(__dirname, '../dist');
 if (fs.existsSync(distDir)) {
   app.use(express.static(distDir));
 
-  // Cualquier otra ruta no capturada por la API debe devolver el frontend index.html
-  app.get('/*', (req, res, next) => {
-    if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
-      return next();
-    }
+  // Catch-all: cualquier ruta no resuelta por la API devuelve el index.html de React.
+  // Usamos app.use() sin patrón para evitar errores de path-to-regexp en Express 5.
+  app.use((req, res) => {
     res.sendFile(path.join(distDir, 'index.html'));
   });
 }
 
 // Manejo de errores básico
-app.use((err, req, res, next) => {
+app.use((err, req, res, _next) => {
   console.error('Error no controlado:', err);
   res.status(500).json({ message: err.message || 'Error interno del servidor' });
 });
