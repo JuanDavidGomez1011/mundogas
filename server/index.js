@@ -36,6 +36,20 @@ app.use('/uploads', express.static(uploadsDir));
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 
+// Servir archivos estáticos del frontend compilado de React (en producción)
+const distDir = path.resolve(__dirname, '../dist');
+if (fs.existsSync(distDir)) {
+  app.use(express.static(distDir));
+
+  // Cualquier otra ruta no capturada por la API debe devolver el frontend index.html
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
+      return next();
+    }
+    res.sendFile(path.join(distDir, 'index.html'));
+  });
+}
+
 // Manejo de errores básico
 app.use((err, req, res, next) => {
   console.error('Error no controlado:', err);
