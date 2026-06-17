@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ShoppingBag, MessageSquare, Loader, PackageOpen } from 'lucide-react';
+import { ShoppingBag, MessageSquare, Loader } from 'lucide-react';
 import { businessData } from '../data/businessData';
 
 interface Product {
