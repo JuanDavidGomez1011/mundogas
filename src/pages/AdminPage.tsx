@@ -113,6 +113,10 @@ export const AdminPage: React.FC = () => {
       const data = await response.json();
 
       if (!response.ok) {
+        if (response.status === 401 || response.status === 403) {
+          logout();
+          navigate('/admin/login');
+        }
         throw new Error(data.message || 'Error al guardar el producto');
       }
 
@@ -149,6 +153,10 @@ export const AdminPage: React.FC = () => {
       const data = await response.json();
 
       if (!response.ok) {
+        if (response.status === 401 || response.status === 403) {
+          logout();
+          navigate('/admin/login');
+        }
         throw new Error(data.message || 'Error al eliminar el producto');
       }
 

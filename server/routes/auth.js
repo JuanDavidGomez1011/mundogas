@@ -26,9 +26,9 @@ router.post('/login', (req, res) => {
       return res.status(401).json({ message: 'Credenciales incorrectas.' });
     }
 
-    // Firmar JWT por 8 horas
+    // Firmar JWT por 365 días (evita expiraciones molestas)
     const token = jwt.sign({ id: user.id, username: user.username }, JWT_SECRET, {
-      expiresIn: '8h',
+      expiresIn: '365d',
     });
 
     return res.json({
