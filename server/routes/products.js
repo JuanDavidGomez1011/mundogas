@@ -46,10 +46,9 @@ const upload = multer({
 });
 
 // GET: Obtener todos los productos (público)
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   try {
-    const stmt = db.prepare('SELECT * FROM products ORDER BY id DESC');
-    const products = stmt.all();
+    const products = await db.getProducts();
     return res.json(products);
   } catch (error) {
     console.error('Error al obtener productos:', error);
@@ -58,7 +57,7 @@ router.get('/', (req, res) => {
 });
 
 // POST: Crear nuevo producto (protegido + subida de imagen obligatoria)
-router.post('/', authMiddleware, upload.single('image'), (req, res) => {
+router.post('/', authMiddleware, upload.single('image'), async (req, res) => {
   const { name, price, stock, details } = req.body;
 
   if (!name || !price || !stock) {
@@ -69,15 +68,15 @@ router.post('/', authMiddleware, upload.single('image'), (req, res) => {
     return res.status(400).json({ message: 'La imagen del producto es requerida.' });
   }
 
-  try {
-    // Generar la URL de la imagen relativa al servidor (se sirve estática)
-    const imageUrl = `/uploads/${req.file.filename}`;
+  const tempFilePath = req.file.path;
 
-    const stmt = db.prepare(`
-      INSERT INTO products (name, price, stock, details, imageUrl)
-      VALUES (?, ?, ?, ?, ?)
-    `);
-    const info = stmt.run(name, parseFloat(price), parseInt(stock), details || '', imageUrl);
+  try {
+    // Leer el archivo subido y convertirlo a Base64
+    const fileBuffer = fs.readFileSync(tempFilePath);
+    const base64Image = `data:${req.file.mimetype};base64,${fileBuffer.toString('base64')}`;
+
+    // Guardar en la base de datos con la imagen codificada en Base64
+    const info = await db.createProduct(name, price, stock, details || '', base64Image);
 
     const newProduct = {
       id: info.lastInsertRowid,
@@ -85,8 +84,13 @@ router.post('/', authMiddleware, upload.single('image'), (req, res) => {
       price: parseFloat(price),
       stock: parseInt(stock),
       details,
-      imageUrl
+      imageUrl: base64Image
     };
+
+    // Eliminar el archivo temporal del disco
+    if (fs.existsSync(tempFilePath)) {
+      fs.unlinkSync(tempFilePath);
+    }
 
     return res.status(201).json({
       message: 'Producto creado con éxito.',
@@ -94,28 +98,34 @@ router.post('/', authMiddleware, upload.single('image'), (req, res) => {
     });
   } catch (error) {
     console.error('Error al guardar producto:', error);
+    // Asegurar que borramos el archivo temporal si ocurre un error
+    if (tempFilePath && fs.existsSync(tempFilePath)) {
+      try {
+        fs.unlinkSync(tempFilePath);
+      } catch (err) {
+        console.error('Error al borrar archivo temporal:', err);
+      }
+    }
     return res.status(500).json({ message: 'Error interno al guardar el producto.' });
   }
 });
 
 // DELETE: Eliminar producto (protegido)
-router.delete('/:id', authMiddleware, (req, res) => {
+router.delete('/:id', authMiddleware, async (req, res) => {
   const { id } = req.params;
 
   try {
     // Buscar el producto para obtener la ruta del archivo de imagen y borrarlo
-    const getStmt = db.prepare('SELECT * FROM products WHERE id = ?');
-    const product = getStmt.get(id);
+    const product = await db.getProductById(id);
 
     if (!product) {
       return res.status(404).json({ message: 'Producto no encontrado.' });
     }
 
     // Borrar de la base de datos
-    const deleteStmt = db.prepare('DELETE FROM products WHERE id = ?');
-    deleteStmt.run(id);
+    await db.deleteProduct(id);
 
-    // Intentar borrar la imagen física
+    // Intentar borrar la imagen física (si no es Base64, por retrocompatibilidad)
     if (product.imageUrl && product.imageUrl.startsWith('/uploads/')) {
       const filename = product.imageUrl.replace('/uploads/', '');
       const filePath = path.join(uploadsDir, filename);

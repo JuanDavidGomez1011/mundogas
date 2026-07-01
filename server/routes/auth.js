@@ -6,7 +6,7 @@ import db from '../db/database.js';
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'mundogas_super_secret_key_12345!';
 
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
@@ -14,8 +14,7 @@ router.post('/login', (req, res) => {
   }
 
   try {
-    const stmt = db.prepare('SELECT * FROM users WHERE username = ?');
-    const user = stmt.get(username);
+    const user = await db.getUserByUsername(username);
 
     if (!user) {
       return res.status(401).json({ message: 'Credenciales incorrectas.' });
