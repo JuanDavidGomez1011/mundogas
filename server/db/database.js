@@ -117,7 +117,10 @@ const db = {
   async getProducts() {
     if (isPostgres) {
       const res = await pgPool.query('SELECT * FROM products ORDER BY id DESC');
-      return res.rows;
+      return res.rows.map(row => ({
+        ...row,
+        imageUrl: row.imageurl || row.imageUrl
+      }));
     } else {
       return dbSqlite.prepare('SELECT * FROM products ORDER BY id DESC').all();
     }
@@ -126,7 +129,14 @@ const db = {
   async getProductById(id) {
     if (isPostgres) {
       const res = await pgPool.query('SELECT * FROM products WHERE id = $1', [id]);
-      return res.rows[0] || null;
+      const row = res.rows[0];
+      if (row) {
+        return {
+          ...row,
+          imageUrl: row.imageurl || row.imageUrl
+        };
+      }
+      return null;
     } else {
       return dbSqlite.prepare('SELECT * FROM products WHERE id = ?').get(id) || null;
     }
