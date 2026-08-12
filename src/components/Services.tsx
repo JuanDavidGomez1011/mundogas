@@ -1,12 +1,35 @@
 import React from 'react';
 import { businessData } from '../data/businessData';
-import { Flame, BadgeCheck, Wrench, CheckCircle2, MessageSquare } from 'lucide-react';
+import { Flame, BadgeCheck, Wrench, CheckCircle2, MessageSquare, ShoppingCart, ShieldCheck, Package, Activity, Droplet, Wind, UserCog, MessageCircle, Thermometer, Database, Settings } from 'lucide-react';
 
 // Map icon string names to actual Lucide components
 const IconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Flame: Flame,
   BadgeCheck: BadgeCheck,
   Wrench: Wrench,
+};
+
+const getServiceIcon = (text: string) => {
+  const lower = text.toLowerCase();
+  if (lower.includes('venta de calentadores')) return ShoppingCart;
+  if (lower.includes('instalación')) return Wrench;
+  if (lower.includes('reparación de calentadores')) return Wrench;
+  if (lower.includes('mantenimiento')) return ShieldCheck;
+  if (lower.includes('repuestos')) return Package;
+  if (lower.includes('redes')) return Activity;
+  if (lower.includes('chimeneas a gas')) return Flame;
+  if (lower.includes('chimeneas de alcohol')) return Droplet;
+  if (lower.includes('quemadores')) return Flame;
+  if (lower.includes('ductos')) return Wind;
+  if (lower.includes('servicio técnico')) return UserCog;
+  if (lower.includes('estufas')) return Flame;
+  if (lower.includes('asesoría')) return MessageCircle;
+  
+  if (lower.includes('paso')) return Thermometer;
+  if (lower.includes('acumulación')) return Database;
+  if (lower.includes('accesorios')) return Settings;
+  
+  return CheckCircle2;
 };
 
 export const Services: React.FC = () => {
@@ -89,38 +112,47 @@ export const Services: React.FC = () => {
         </div>
 
         {/* Full Services & Categories List */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-12 bg-[#0D2A6B] p-8 md:p-12 rounded-3xl border border-white/15 shadow-[0_10px_30px_rgba(0,0,0,0.4)]">
-          <div>
+        <div className="mt-16 space-y-12">
+          {/* Catálogo de Servicios */}
+          <div className="bg-[#0D2A6B] p-8 md:p-12 rounded-3xl border border-white/15 shadow-[0_10px_30px_rgba(0,0,0,0.4)]">
             <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
               <div className="p-2 bg-[#153A8A] rounded-xl">
                 <Wrench className="h-6 w-6 text-[#FFD700]" />
               </div>
               Catálogo de Servicios
             </h3>
-            <ul className="space-y-4">
-              {businessData.allServices.map((item, i) => (
-                <li key={i} className="flex items-start gap-3 text-slate-300">
-                  <CheckCircle2 className="h-5 w-5 text-[#00E676] shrink-0 mt-0.5" />
-                  <span className="leading-relaxed">{item}</span>
-                </li>
-              ))}
-            </ul>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {businessData.allServices.map((item, i) => {
+                const IconComponent = getServiceIcon(item);
+                return (
+                  <div key={i} className="flex items-center gap-3 bg-[#153A8A] border border-white/10 rounded-xl p-4 shadow-lg hover:bg-[#1A45A0] hover:border-[#FFD700]/50 hover:scale-[1.03] hover:shadow-[0_8px_25px_rgba(255,215,0,0.15)] transition-all duration-300 group">
+                    <IconComponent className="h-6 w-6 text-[#00E676] shrink-0 group-hover:scale-110 transition-transform duration-300" />
+                    <span className="text-white text-sm font-semibold leading-snug">{item}</span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-          <div>
+
+          {/* Categorías de Productos */}
+          <div className="bg-[#0D2A6B] p-8 md:p-12 rounded-3xl border border-white/15 shadow-[0_10px_30px_rgba(0,0,0,0.4)]">
             <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
               <div className="p-2 bg-[#153A8A] rounded-xl">
                 <Flame className="h-6 w-6 text-[#FFD700]" />
               </div>
               Categorías de Productos
             </h3>
-            <ul className="space-y-4">
-              {businessData.categories.map((cat, i) => (
-                <li key={i} className="flex items-start gap-3 text-slate-300">
-                  <CheckCircle2 className="h-5 w-5 text-[#00E676] shrink-0 mt-0.5" />
-                  <span className="leading-relaxed">{cat}</span>
-                </li>
-              ))}
-            </ul>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {businessData.categories.map((cat, i) => {
+                const IconComponent = getServiceIcon(cat);
+                return (
+                  <div key={i} className="flex items-center gap-3 bg-[#153A8A] border border-white/10 rounded-xl p-4 shadow-lg hover:bg-[#1A45A0] hover:border-[#FFD700]/50 hover:scale-[1.03] hover:shadow-[0_8px_25px_rgba(255,215,0,0.15)] transition-all duration-300 group">
+                    <IconComponent className="h-6 w-6 text-[#00E676] shrink-0 group-hover:scale-110 transition-transform duration-300" />
+                    <span className="text-white text-sm font-semibold leading-snug">{cat}</span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
 

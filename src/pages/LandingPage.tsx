@@ -7,6 +7,7 @@ import { Catalog } from '../components/Catalog';
 import { Gallery } from '../components/Gallery';
 import { Contact } from '../components/Contact';
 import { Footer } from '../components/Footer';
+import { WhatsAppButton } from '../components/WhatsAppButton';
 
 export const LandingPage: React.FC = () => {
   return (
@@ -37,6 +38,9 @@ export const LandingPage: React.FC = () => {
 
       {/* Footer de Cierre y Cumplimiento Normativo */}
       <Footer />
+      
+      {/* Botón flotante de WhatsApp */}
+      <WhatsAppButton />
     </div>
   );
 };
