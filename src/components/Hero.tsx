@@ -1,6 +1,7 @@
 import React from 'react';
 import { businessData } from '../data/businessData';
 import { Flame, ArrowRight, ShieldCheck, BadgeCheck, Clock, Award } from 'lucide-react';
+import { Logo } from './Logo';
 
 export const Hero: React.FC = () => {
   const primaryPhone = businessData.contact.phoneNumbers.find(p => p.isWhatsApp) || businessData.contact.phoneNumbers[0];
@@ -58,10 +59,10 @@ export const Hero: React.FC = () => {
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white px-8 py-4 font-bold shadow-lg shadow-emerald-600/10 hover:shadow-emerald-600/25 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-[#003B31] px-8 py-4 font-extrabold text-lg shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:shadow-[0_0_30px_rgba(16,185,129,0.6)] hover:-translate-y-1 active:scale-[0.98] transition-all duration-300"
               >
-                <Flame className="h-5 w-5 fill-white/10 animate-pulse text-cyan-200" />
-                Solicitar Cotización Gratis
+                <Flame className="h-6 w-6 text-[#003B31] animate-bounce" />
+                ¡Cotiza tu Calentador Ya!
               </a>
               <button
                 onClick={handleScrollToServices}
@@ -96,8 +97,8 @@ export const Hero: React.FC = () => {
 
             {/* Glassmorphic Guarantee Card */}
             <div className="relative w-full max-w-sm rounded-3xl border border-white/15 bg-[#0D2A6B] p-8 shadow-[0_10px_30px_rgba(0,0,0,0.4)]">
-              <div className="absolute top-4 right-4 h-12 w-12 rounded-full bg-cyan-900/50 border border-cyan-800 flex items-center justify-center">
-                <Flame className="h-6 w-6 text-cyan-400 animate-bounce" />
+              <div className="absolute top-[-30px] right-6 h-16 w-16 rounded-full bg-white border-[3px] border-[#0D2A6B] flex items-center justify-center shadow-lg overflow-hidden">
+                <Logo showText={false} className="h-10 w-10" />
               </div>
 
               {/* Title & Badge */}

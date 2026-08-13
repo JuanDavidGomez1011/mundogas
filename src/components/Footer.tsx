@@ -25,7 +25,9 @@ export const Footer: React.FC = () => {
           
           {/* Column 1: Logo & Brand Pitch */}
           <div className="space-y-4 md:col-span-1">
-            <Logo showText={true} className="h-10 w-10 text-white" />
+            <div className="bg-white/10 w-fit p-3 rounded-2xl border border-white/20 shadow-lg">
+              <Logo showText={true} className="h-14 w-auto max-w-[180px] text-white" />
+            </div>
             <p className="text-sm text-slate-400 leading-relaxed pt-2">
               {businessData.slogan} <br />
               Brindando calidez, confort y seguridad técnica a los hogares de Manizales durante más de {businessData.experienceYears} años.

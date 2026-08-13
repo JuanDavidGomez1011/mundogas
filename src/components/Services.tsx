@@ -100,7 +100,7 @@ export const Services: React.FC = () => {
                     href={waLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[#153A8A] hover:bg-[#1A45A0] text-white font-bold py-3 px-4 text-sm transition-all duration-300"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-600 to-emerald-400 hover:from-emerald-500 hover:to-emerald-300 text-white font-bold py-3 px-4 text-sm shadow-[0_0_15px_rgba(16,185,129,0.3)] hover:shadow-[0_0_25px_rgba(16,185,129,0.5)] hover:-translate-y-1 transition-all duration-300"
                   >
                     <MessageSquare className="h-4 w-4" />
                     Consultar {service.id === 'venta' ? 'Marcas' : service.id === 'instalacion' ? 'Instalación' : 'Mantenimiento'}

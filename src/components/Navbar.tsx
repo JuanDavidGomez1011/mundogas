@@ -32,10 +32,10 @@ export const Navbar: React.FC = () => {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-blue-900/50 bg-[#0D2A6B]/95 backdrop-blur-md transition-all duration-300">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
+        <div className="flex py-3 items-center justify-between">
           {/* Logo */}
           <div className="flex-shrink-0 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-            <Logo showText={true} className="h-10 w-10 text-slate-900" />
+            <Logo showText={true} className="h-16 w-auto md:h-20 max-w-[200px]" />
           </div>
 
           {/* Desktop Navigation */}
