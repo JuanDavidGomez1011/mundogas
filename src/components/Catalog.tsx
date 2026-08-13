@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ShoppingBag, MessageSquare, Loader } from 'lucide-react';
 import { businessData } from '../data/businessData';
+import { apiUrl } from '../utils/api';
 
 interface Product {
   id: number;
@@ -22,7 +23,7 @@ export const Catalog: React.FC = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('/api/products');
+        const response = await fetch(apiUrl('/api/products'));
         if (response.ok) {
           const data = await response.json();
           setProducts(data);

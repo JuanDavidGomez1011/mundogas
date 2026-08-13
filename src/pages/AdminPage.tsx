@@ -14,6 +14,7 @@ import {
   ArrowLeft,
   Loader
 } from 'lucide-react';
+import { apiUrl } from '../utils/api';
 
 interface Product {
   id: number;
@@ -54,7 +55,7 @@ export const AdminPage: React.FC = () => {
   // Fetch products function
   const fetchProducts = async () => {
     try {
-      const response = await fetch('/api/products');
+      const response = await fetch(apiUrl('/api/products'));
       if (response.ok) {
         const data = await response.json();
         setProducts(data);
@@ -102,7 +103,7 @@ export const AdminPage: React.FC = () => {
     formData.append('image', imageFile);
 
     try {
-      const response = await fetch('/api/products', {
+      const response = await fetch(apiUrl('/api/products'), {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -143,7 +144,7 @@ export const AdminPage: React.FC = () => {
     if (!window.confirm('¿Estás seguro de que deseas eliminar este producto?')) return;
 
     try {
-      const response = await fetch(`/api/products/${id}`, {
+      const response = await fetch(apiUrl(`/api/products/${id}`), {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Lock, User, AlertCircle, ArrowLeft } from 'lucide-react';
+import { apiUrl } from '../utils/api';
 
 export const LoginPage: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -17,7 +18,7 @@ export const LoginPage: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('/api/auth/login', {
+      const response = await fetch(apiUrl('/api/auth/login'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
