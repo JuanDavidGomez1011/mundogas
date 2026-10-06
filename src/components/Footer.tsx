@@ -91,11 +91,15 @@ export const Footer: React.FC = () => {
               </li>
               <li className="flex items-center gap-1.5">
                 <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
-                <span>Challenger</span>
+                <span>Titanium</span>
               </li>
               <li className="flex items-center gap-1.5">
                 <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
-                <span>Challenger y Haceb</span>
+                <span>Oka</span>
+              </li>
+              <li className="flex items-center gap-1.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
+                <span>Toolcraft</span>
               </li>
             </ul>
           </div>

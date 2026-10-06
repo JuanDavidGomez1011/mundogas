@@ -81,8 +81,7 @@ export const businessData: BusinessData = {
   contact: {
     phoneNumbers: [
       { label: 'Celular / WhatsApp Principal', number: '313 6076305', whatsappFormatted: '+573136076305', isWhatsApp: true },
-      { label: 'Celular de Soporte', number: '310 4656411', whatsappFormatted: '+573104656411', isWhatsApp: true },
-      { label: 'Teléfono Fijo', number: '3729561', whatsappFormatted: '', isWhatsApp: false }
+      { label: 'Celular de Soporte', number: '310 4656411', whatsappFormatted: '+573104656411', isWhatsApp: true }
     ],
     emails: ['almacenmundogas25@gmail.com'],
     address: {
@@ -100,7 +99,7 @@ export const businessData: BusinessData = {
       id: 'venta',
       title: 'Modelos y Marcas Diversas',
       shortDescription: 'Contamos con una selección impresionante de calentadores a gas de las mejores marcas del mercado.',
-      fullDescription: 'En Mundo Gas te ofrecemos un amplio portafolio de calentadores de marcas líderes mundiales como Bosch, Clasic, Challenger y más. Encontrarás calentadores de tiro natural, tiro forzado y de acumulación, adaptados a la presión de agua de tu hogar y con capacidades desde 5.5 litros hasta 20 litros.',
+      fullDescription: 'En Mundo Gas te ofrecemos un amplio portafolio de calentadores de marcas líderes mundiales como Bosch, Clasic, Titanium, Oka y Toolcraft. Encontrarás calentadores de tiro natural, tiro forzado y de acumulación, adaptados a la presión de agua de tu hogar y con capacidades desde 5.5 litros hasta 20 litros.',
       iconName: 'Flame',
       highlights: ['Calentadores Bosch y Clasic originales', 'Garantía directa de fábrica', 'Asesoría experta para elegir la capacidad correcta']
     },
@@ -118,7 +117,7 @@ export const businessData: BusinessData = {
       shortDescription: 'Cuidado preventivo y correctivo para prolongar la vida útil de tu equipo y asegurar su eficiencia.',
       fullDescription: '¿Tu calentador no calienta como antes, arroja llama amarilla o tiene apagones repentinos? Realizamos mantenimiento preventivo completo (limpieza de quemadores, calibración de sensores, revisión de válvula de gas y cambio de baterías) y reparación técnica experta con repuestos 100% originales.',
       iconName: 'Wrench',
-      highlights: ['Mantenimiento preventivo anual', 'Diagnóstico preciso de fallas', 'Repuestos originales Bosch, Clasic y multimarca']
+      highlights: ['Mantenimiento preventivo anual', 'Diagnóstico preciso de fallas', 'Repuestos originales Bosch, Clasic, Titanium, Oka, Toolcraft y multimarca']
     },
     {
       id: 'redes-chimeneas',
@@ -199,8 +198,8 @@ export const businessData: BusinessData = {
         days: [1, 2, 3, 4, 5],
         label: 'Lunes a Viernes',
         ranges: [
-          { start: '08:00', end: '12:30' },
-          { start: '14:00', end: '18:00' }
+          { start: '08:00', end: '12:00' },
+          { start: '14:00', end: '17:30' }
         ]
       }
     ],
@@ -209,7 +208,7 @@ export const businessData: BusinessData = {
         days: [6],
         label: 'Sábados',
         ranges: [
-          { start: '08:00', end: '13:30' }
+          { start: '08:00', end: '12:00' }
         ]
       }
     ],
