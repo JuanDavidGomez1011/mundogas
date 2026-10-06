@@ -31,14 +31,8 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: (origin, callback) => {
-    // Permitir requests sin origin (Postman, curl, SSR)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
-    // En desarrollo, ser permisivo
-    if (process.env.NODE_ENV !== 'production') return callback(null, true);
-    callback(new Error(`CORS bloqueado: origen ${origin} no permitido.`));
+    // Permitir todos los orígenes para evitar bloqueos en Hostinger o Vercel
+    return callback(null, true);
   },
   credentials: true,
 }));
