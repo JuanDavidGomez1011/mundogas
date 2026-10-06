@@ -157,7 +157,7 @@ export const Navbar: React.FC = () => {
               Escríbenos
             </a>
             <a
-              href={`tel:${businessData.contact.phoneNumbers[2].number}`}
+              href={`tel:${businessData.contact.phoneNumbers[0].number}`}
               className="inline-flex items-center justify-center rounded-lg bg-slate-100 p-2.5 text-slate-700 hover:bg-slate-200"
             >
               <Phone className="h-4 w-4" />
