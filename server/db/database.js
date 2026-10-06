@@ -75,9 +75,14 @@ async function initDatabase() {
       const count = rows[0]?.count || 0;
       if (count === 0) {
         const salt = bcrypt.genSaltSync(10);
-        const hashedPassword = bcrypt.hashSync('mundogas2024', salt);
+        const hashedPassword = bcrypt.hashSync('Mundogas2026*', salt);
         await mysqlPool.query('INSERT INTO users (username, password) VALUES (?, ?)', ['admin', hashedPassword]);
-        console.log('Usuario administrador creado con éxito en MySQL: admin / mundogas2024');
+        console.log('Usuario administrador creado con éxito en MySQL: admin / Mundogas2026*');
+      } else {
+        const salt = bcrypt.genSaltSync(10);
+        const hashedPassword = bcrypt.hashSync('Mundogas2026*', salt);
+        await mysqlPool.query('UPDATE users SET password = ? WHERE username = ?', [hashedPassword, 'admin']);
+        console.log('Contraseña de administrador actualizada en MySQL.');
       }
     } catch (err) {
       console.error('Error al inicializar base de datos MySQL:', err);
@@ -109,9 +114,14 @@ async function initDatabase() {
       const count = parseInt(res.rows[0].count, 10);
       if (count === 0) {
         const salt = bcrypt.genSaltSync(10);
-        const hashedPassword = bcrypt.hashSync('mundogas2024', salt);
+        const hashedPassword = bcrypt.hashSync('Mundogas2026*', salt);
         await client.query('INSERT INTO users (username, password) VALUES ($1, $2)', ['admin', hashedPassword]);
-        console.log('Usuario administrador creado con éxito en PostgreSQL: admin / mundogas2024');
+        console.log('Usuario administrador creado con éxito en PostgreSQL: admin / Mundogas2026*');
+      } else {
+        const salt = bcrypt.genSaltSync(10);
+        const hashedPassword = bcrypt.hashSync('Mundogas2026*', salt);
+        await client.query('UPDATE users SET password = $1 WHERE username = $2', [hashedPassword, 'admin']);
+        console.log('Contraseña de administrador actualizada en PostgreSQL.');
       }
     } catch (err) {
       console.error('Error al inicializar base de datos PostgreSQL:', err);
@@ -144,10 +154,16 @@ async function initDatabase() {
 
     if (count === 0) {
       const salt = bcrypt.genSaltSync(10);
-      const hashedPassword = bcrypt.hashSync('mundogas2024', salt);
+      const hashedPassword = bcrypt.hashSync('Mundogas2026*', salt);
       const insertUserStmt = dbSqlite.prepare('INSERT INTO users (username, password) VALUES (?, ?)');
       insertUserStmt.run('admin', hashedPassword);
-      console.log('Usuario administrador creado con éxito en SQLite: admin / mundogas2024');
+      console.log('Usuario administrador creado con éxito en SQLite: admin / Mundogas2026*');
+    } else {
+      const salt = bcrypt.genSaltSync(10);
+      const hashedPassword = bcrypt.hashSync('Mundogas2026*', salt);
+      const updateUserStmt = dbSqlite.prepare('UPDATE users SET password = ? WHERE username = ?');
+      updateUserStmt.run(hashedPassword, 'admin');
+      console.log('Contraseña de administrador actualizada en SQLite.');
     }
   }
 }
