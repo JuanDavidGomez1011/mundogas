@@ -140,7 +140,6 @@ export const businessData: BusinessData = {
     'Quemadores para estufas.',
     'Ductos de evacuación.',
     'Servicio técnico especializado.',
-    'Reparación de estufas y hornos a gas.',
     'Asesoría técnica especializada.'
   ],
   categories: [

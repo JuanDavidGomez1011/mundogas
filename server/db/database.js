@@ -71,6 +71,11 @@ async function initDatabase() {
         );
       `);
 
+      // Asegurar columna images para soporte de múltiples imágenes
+      try {
+        await mysqlPool.query('ALTER TABLE products ADD COLUMN images LONGTEXT');
+      } catch (e) {}
+
       const [rows] = await mysqlPool.query('SELECT COUNT(*) as count FROM users');
       const count = rows[0]?.count || 0;
       if (count === 0) {
@@ -109,6 +114,11 @@ async function initDatabase() {
           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
       `);
+
+      // Asegurar columna images para soporte de múltiples imágenes
+      try {
+        await client.query('ALTER TABLE products ADD COLUMN images TEXT');
+      } catch (e) {}
 
       const res = await client.query('SELECT COUNT(*) as count FROM users');
       const count = parseInt(res.rows[0].count, 10);
@@ -149,6 +159,11 @@ async function initDatabase() {
       );
     `);
 
+    // Asegurar columna images en SQLite
+    try {
+      dbSqlite.exec('ALTER TABLE products ADD COLUMN images TEXT;');
+    } catch (e) {}
+
     const checkUserStmt = dbSqlite.prepare('SELECT COUNT(*) as count FROM users');
     const { count } = checkUserStmt.get();
 
@@ -171,6 +186,31 @@ async function initDatabase() {
 // Ejecutar inicialización
 await initDatabase();
 
+function parseProduct(row) {
+  if (!row) return null;
+  const primaryImage = row.imageurl || row.imageUrl || '';
+  let images = [];
+  if (row.images) {
+    try {
+      const parsed = typeof row.images === 'string' ? JSON.parse(row.images) : row.images;
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        images = parsed;
+      }
+    } catch (err) {
+      images = primaryImage ? [primaryImage] : [];
+    }
+  }
+  if (images.length === 0 && primaryImage) {
+    images = [primaryImage];
+  }
+
+  return {
+    ...row,
+    imageUrl: primaryImage || (images[0] || ''),
+    images
+  };
+}
+
 const db = {
   async getUserByUsername(username) {
     if (isMysql) {
@@ -187,64 +227,50 @@ const db = {
   async getProducts() {
     if (isMysql) {
       const [rows] = await mysqlPool.query('SELECT * FROM products ORDER BY id DESC');
-      return rows.map(row => ({
-        ...row,
-        imageUrl: row.imageurl || row.imageUrl
-      }));
+      return rows.map(parseProduct);
     } else if (isPostgres) {
       const res = await pgPool.query('SELECT * FROM products ORDER BY id DESC');
-      return res.rows.map(row => ({
-        ...row,
-        imageUrl: row.imageurl || row.imageUrl
-      }));
+      return res.rows.map(parseProduct);
     } else {
-      return dbSqlite.prepare('SELECT * FROM products ORDER BY id DESC').all();
+      const rows = dbSqlite.prepare('SELECT * FROM products ORDER BY id DESC').all();
+      return rows.map(parseProduct);
     }
   },
 
   async getProductById(id) {
     if (isMysql) {
       const [rows] = await mysqlPool.query('SELECT * FROM products WHERE id = ?', [id]);
-      const row = rows[0];
-      if (row) {
-        return {
-          ...row,
-          imageUrl: row.imageurl || row.imageUrl
-        };
-      }
-      return null;
+      return parseProduct(rows[0]);
     } else if (isPostgres) {
       const res = await pgPool.query('SELECT * FROM products WHERE id = $1', [id]);
-      const row = res.rows[0];
-      if (row) {
-        return {
-          ...row,
-          imageUrl: row.imageurl || row.imageUrl
-        };
-      }
-      return null;
+      return parseProduct(res.rows[0]);
     } else {
-      return dbSqlite.prepare('SELECT * FROM products WHERE id = ?').get(id) || null;
+      const row = dbSqlite.prepare('SELECT * FROM products WHERE id = ?').get(id);
+      return parseProduct(row);
     }
   },
 
-  async createProduct(name, price, stock, details, imageUrl) {
+  async createProduct(name, price, stock, details, imageUrl, images = null) {
+    const imagesJson = Array.isArray(images)
+      ? JSON.stringify(images)
+      : (typeof images === 'string' ? images : JSON.stringify([imageUrl]));
+
     if (isMysql) {
       const [result] = await mysqlPool.query(
-        'INSERT INTO products (name, price, stock, details, imageUrl) VALUES (?, ?, ?, ?, ?)',
-        [name, parseFloat(price), parseInt(stock), details || '', imageUrl]
+        'INSERT INTO products (name, price, stock, details, imageUrl, images) VALUES (?, ?, ?, ?, ?, ?)',
+        [name, parseFloat(price), parseInt(stock), details || '', imageUrl, imagesJson]
       );
       return { lastInsertRowid: result.insertId };
     } else if (isPostgres) {
       const res = await pgPool.query(
-        'INSERT INTO products (name, price, stock, details, imageUrl) VALUES ($1, $2, $3, $4, $5) RETURNING id',
-        [name, parseFloat(price), parseInt(stock), details || '', imageUrl]
+        'INSERT INTO products (name, price, stock, details, imageUrl, images) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id',
+        [name, parseFloat(price), parseInt(stock), details || '', imageUrl, imagesJson]
       );
       return { lastInsertRowid: res.rows[0].id };
     } else {
       const info = dbSqlite.prepare(
-        'INSERT INTO products (name, price, stock, details, imageUrl) VALUES (?, ?, ?, ?, ?)'
-      ).run(name, parseFloat(price), parseInt(stock), details || '', imageUrl);
+        'INSERT INTO products (name, price, stock, details, imageUrl, images) VALUES (?, ?, ?, ?, ?, ?)'
+      ).run(name, parseFloat(price), parseInt(stock), details || '', imageUrl, imagesJson);
       return { lastInsertRowid: info.lastInsertRowid };
     }
   },

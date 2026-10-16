@@ -47,6 +47,12 @@ export const Navbar: React.FC = () => {
               Inicio
             </button>
             <button
+              onClick={() => handleScroll('catalogo')}
+              className="text-sm font-medium text-amber-400 hover:text-amber-300 font-semibold transition-colors cursor-pointer"
+            >
+              Catálogo
+            </button>
+            <button
               onClick={() => handleScroll('servicios')}
               className="text-sm font-medium text-slate-200 hover:text-emerald-400 transition-colors cursor-pointer"
             >
@@ -126,6 +132,12 @@ export const Navbar: React.FC = () => {
             className="block w-full text-left rounded-md px-3 py-2 text-base font-medium text-slate-200 hover:bg-[#153A8A] hover:text-white"
           >
             Inicio
+          </button>
+          <button
+            onClick={() => handleScroll('catalogo')}
+            className="block w-full text-left rounded-md px-3 py-2 text-base font-medium text-amber-400 font-semibold hover:bg-[#153A8A] hover:text-white"
+          >
+            Catálogo
           </button>
           <button
             onClick={() => handleScroll('servicios')}

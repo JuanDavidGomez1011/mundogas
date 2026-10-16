@@ -12,7 +12,10 @@ import {
   AlertCircle,
   CheckCircle,
   ArrowLeft,
-  Loader
+  Loader,
+  X,
+  Star,
+  Layers
 } from 'lucide-react';
 import { apiUrl } from '../utils/api';
 
@@ -23,6 +26,7 @@ interface Product {
   stock: number;
   details: string;
   imageUrl: string;
+  images?: string[];
 }
 
 export const AdminPage: React.FC = () => {
@@ -34,8 +38,8 @@ export const AdminPage: React.FC = () => {
   const [price, setPrice] = useState('');
   const [stock, setStock] = useState('');
   const [details, setDetails] = useState('');
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
   // Status states
   const [products, setProducts] = useState<Product[]>([]);
@@ -73,22 +77,54 @@ export const AdminPage: React.FC = () => {
     }
   }, [isAuthenticated]);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setImageFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
+  const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files ? Array.from(e.target.files) : [];
+    if (files.length === 0) return;
+
+    // Permitir hasta 8 imágenes en total
+    const combinedFiles = [...imageFiles, ...files].slice(0, 8);
+    setImageFiles(combinedFiles);
+
+    // Generar previews para todos
+    const previewPromises = combinedFiles.map((file) => {
+      return new Promise<string>((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.readAsDataURL(file);
+      });
+    });
+
+    Promise.all(previewPromises).then((previews) => {
+      setImagePreviews(previews);
+    });
+
+    // Reset input para permitir volver a seleccionar si se desea
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
+  const handleRemoveImage = (indexToRemove: number) => {
+    const newFiles = imageFiles.filter((_, idx) => idx !== indexToRemove);
+    const newPreviews = imagePreviews.filter((_, idx) => idx !== indexToRemove);
+    setImageFiles(newFiles);
+    setImagePreviews(newPreviews);
+  };
+
+  const handleSetPrimary = (indexToPrimary: number) => {
+    if (indexToPrimary === 0) return;
+    const file = imageFiles[indexToPrimary];
+    const preview = imagePreviews[indexToPrimary];
+
+    const newFiles = [file, ...imageFiles.filter((_, idx) => idx !== indexToPrimary)];
+    const newPreviews = [preview, ...imagePreviews.filter((_, idx) => idx !== indexToPrimary)];
+
+    setImageFiles(newFiles);
+    setImagePreviews(newPreviews);
   };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !price || !stock || !imageFile) {
-      setMessage({ type: 'error', text: 'Por favor completa todos los campos requeridos.' });
+    if (!name || !price || !stock || imageFiles.length === 0) {
+      setMessage({ type: 'error', text: 'Por favor completa todos los campos requeridos y sube al menos una imagen.' });
       return;
     }
 
@@ -100,7 +136,13 @@ export const AdminPage: React.FC = () => {
     formData.append('price', price);
     formData.append('stock', stock);
     formData.append('details', details);
-    formData.append('image', imageFile);
+    
+    // Adjuntar todas las imágenes seleccionadas
+    imageFiles.forEach((file) => {
+      formData.append('images', file);
+    });
+    // Retrocompatibilidad con single image
+    formData.append('image', imageFiles[0]);
 
     try {
       const response = await fetch(apiUrl('/api/products'), {
@@ -121,14 +163,14 @@ export const AdminPage: React.FC = () => {
         throw new Error(data.message || 'Error al guardar el producto');
       }
 
-      setMessage({ type: 'success', text: '¡Producto agregado correctamente!' });
+      setMessage({ type: 'success', text: `¡Producto agregado con ${imageFiles.length} foto(s) correctamente!` });
       // Reset form
       setName('');
       setPrice('');
       setStock('');
       setDetails('');
-      setImageFile(null);
-      setImagePreview(null);
+      setImageFiles([]);
+      setImagePreviews([]);
       if (fileInputRef.current) fileInputRef.current.value = '';
 
       // Refresh list
@@ -319,38 +361,90 @@ export const AdminPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="space-y-1">
-                <label className="text-slate-300 text-xs font-semibold">
-                  Imagen del Producto *
-                </label>
-                <div className="border-2 border-dashed border-white/15 rounded-2xl p-4 flex flex-col items-center justify-center bg-[#153A8A]/20 hover:border-amber-400 transition-colors relative cursor-pointer group">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-slate-300 text-xs font-semibold">
+                    Imágenes del Producto * {imagePreviews.length > 0 && `(${imagePreviews.length}/8)`}
+                  </label>
+                  <span className="text-[11px] text-amber-400 font-medium">
+                    {imagePreviews.length === 0 ? 'Sube 1 o varias fotos' : 'La 1ª es la principal'}
+                  </span>
+                </div>
+
+                {/* Subida o selector de archivos */}
+                <div className="border-2 border-dashed border-white/15 rounded-2xl p-4 flex flex-col items-center justify-center bg-[#153A8A]/20 hover:border-amber-400 transition-colors relative group">
                   <input
                     type="file"
                     ref={fileInputRef}
-                    required
+                    multiple
                     accept="image/*"
-                    onChange={handleImageChange}
-                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    onChange={handleImagesChange}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                   />
-                  {imagePreview ? (
-                    <div className="w-full flex flex-col items-center gap-2">
-                      <img
-                        src={imagePreview}
-                        alt="Vista previa"
-                        className="h-28 object-cover rounded-xl"
-                      />
-                      <span className="text-xs text-slate-400 truncate max-w-full">
-                        {imageFile?.name}
-                      </span>
-                    </div>
-                  ) : (
-                    <div className="text-center space-y-1">
-                      <ImageIcon className="mx-auto h-8 w-8 text-slate-400 group-hover:text-amber-400 transition-colors" />
-                      <p className="text-xs font-semibold text-slate-300">Sube una imagen aquí</p>
-                      <p className="text-[10px] text-slate-500">Soporta PNG, JPG, WEBP de hasta 5MB</p>
-                    </div>
-                  )}
+                  <div className="text-center space-y-1 py-2 pointer-events-none">
+                    <ImageIcon className="mx-auto h-8 w-8 text-slate-400 group-hover:text-amber-400 transition-colors" />
+                    <p className="text-xs font-semibold text-slate-200">
+                      Haz clic o arrastra fotos aquí
+                    </p>
+                    <p className="text-[10px] text-slate-400">
+                      Puedes subir hasta 8 imágenes (PNG, JPG, WEBP)
+                    </p>
+                  </div>
                 </div>
+
+                {/* Grilla de Miniaturas */}
+                {imagePreviews.length > 0 && (
+                  <div className="grid grid-cols-4 gap-2 pt-2">
+                    {imagePreviews.map((preview, index) => (
+                      <div
+                        key={index}
+                        className={`relative group/thumb rounded-xl overflow-hidden border aspect-square bg-[#08152e] flex items-center justify-center ${
+                          index === 0 ? 'border-amber-400 ring-2 ring-amber-400/30' : 'border-white/10'
+                        }`}
+                      >
+                        <img
+                          src={preview}
+                          alt={`Foto ${index + 1}`}
+                          className="w-full h-full object-contain p-1"
+                        />
+
+                        {/* Badge Principal */}
+                        {index === 0 && (
+                          <span className="absolute top-1 left-1 bg-amber-500 text-[#011B3E] font-bold text-[9px] px-1.5 py-0.5 rounded-md flex items-center gap-0.5 shadow-sm">
+                            <Star className="h-2.5 w-2.5 fill-[#011B3E]" /> Portada
+                          </span>
+                        )}
+
+                        {/* Botón Eliminar Foto */}
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleRemoveImage(index);
+                          }}
+                          className="absolute top-1 right-1 bg-red-600/90 hover:bg-red-500 text-white p-1 rounded-md transition-opacity cursor-pointer shadow-sm z-20"
+                          title="Eliminar esta foto"
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+
+                        {/* Botón Hacer Principal si no lo es */}
+                        {index !== 0 && (
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleSetPrimary(index);
+                            }}
+                            className="absolute bottom-1 inset-x-1 bg-[#011B3E]/90 hover:bg-amber-500 hover:text-[#011B3E] text-slate-200 text-[9px] font-semibold py-0.5 rounded transition-colors text-center cursor-pointer z-20"
+                          >
+                            Hacer portada
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <button
@@ -404,11 +498,19 @@ export const AdminPage: React.FC = () => {
                     {products.map((product) => (
                       <tr key={product.id} className="hover:bg-[#153A8A]/20 transition-colors">
                         <td className="py-4 pr-4">
-                          <img
-                            src={product.imageUrl}
-                            alt={product.name}
-                            className="h-12 w-12 object-cover rounded-xl border border-white/10 bg-[#153A8A]/30"
-                          />
+                          <div className="relative inline-block">
+                            <img
+                              src={product.imageUrl}
+                              alt={product.name}
+                              className="h-12 w-12 object-contain rounded-xl border border-white/10 bg-white p-0.5"
+                            />
+                            {product.images && product.images.length > 1 && (
+                              <span className="absolute -bottom-1 -right-1 bg-blue-600 text-white text-[9px] font-bold px-1.5 py-0.2 rounded-full border border-blue-900 flex items-center gap-0.5">
+                                <Layers className="h-2.5 w-2.5" />
+                                {product.images.length}
+                              </span>
+                            )}
+                          </div>
                         </td>
                         <td className="py-4 pr-4 font-semibold text-white truncate max-w-[150px]">
                           {product.name}

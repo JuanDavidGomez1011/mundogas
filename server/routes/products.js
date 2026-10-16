@@ -45,6 +45,16 @@ const upload = multer({
   fileFilter
 });
 
+// Middleware para aceptar múltiples imágenes o una sola
+const uploadMiddleware = (req, res, next) => {
+  upload.any()(req, res, (err) => {
+    if (err) {
+      return res.status(400).json({ message: err.message || 'Error al procesar las imágenes.' });
+    }
+    next();
+  });
+};
+
 // GET: Obtener todos los productos (público)
 router.get('/', async (req, res) => {
   try {
@@ -56,27 +66,42 @@ router.get('/', async (req, res) => {
   }
 });
 
-// POST: Crear nuevo producto (protegido + subida de imagen obligatoria)
-router.post('/', authMiddleware, upload.single('image'), async (req, res) => {
+// POST: Crear nuevo producto (protegido + subida de una o varias imágenes)
+router.post('/', authMiddleware, uploadMiddleware, async (req, res) => {
   const { name, price, stock, details } = req.body;
 
   if (!name || !price || !stock) {
     return res.status(400).json({ message: 'Nombre, precio y stock son requeridos.' });
   }
 
-  if (!req.file) {
-    return res.status(400).json({ message: 'La imagen del producto es requerida.' });
+  const files = req.files || (req.file ? [req.file] : []);
+
+  if (files.length === 0) {
+    return res.status(400).json({ message: 'Al menos una imagen del producto es requerida.' });
   }
 
-  const tempFilePath = req.file.path;
+  const tempFilePaths = files.map(f => f.path);
 
   try {
-    // Leer el archivo subido y convertirlo a Base64
-    const fileBuffer = fs.readFileSync(tempFilePath);
-    const base64Image = `data:${req.file.mimetype};base64,${fileBuffer.toString('base64')}`;
+    // Convertir todas las imágenes a Base64
+    const base64Images = [];
+    for (const file of files) {
+      const fileBuffer = fs.readFileSync(file.path);
+      const base64 = `data:${file.mimetype};base64,${fileBuffer.toString('base64')}`;
+      base64Images.push(base64);
 
-    // Guardar en la base de datos con la imagen codificada en Base64
-    const info = await db.createProduct(name, price, stock, details || '', base64Image);
+      // Eliminar archivo temporal
+      if (fs.existsSync(file.path)) {
+        try {
+          fs.unlinkSync(file.path);
+        } catch (err) {}
+      }
+    }
+
+    const primaryImage = base64Images[0];
+
+    // Guardar en la base de datos con imagen principal y arreglo de imágenes
+    const info = await db.createProduct(name, price, stock, details || '', primaryImage, base64Images);
 
     const newProduct = {
       id: info.lastInsertRowid,
@@ -84,13 +109,9 @@ router.post('/', authMiddleware, upload.single('image'), async (req, res) => {
       price: parseFloat(price),
       stock: parseInt(stock),
       details,
-      imageUrl: base64Image
+      imageUrl: primaryImage,
+      images: base64Images
     };
-
-    // Eliminar el archivo temporal del disco
-    if (fs.existsSync(tempFilePath)) {
-      fs.unlinkSync(tempFilePath);
-    }
 
     return res.status(201).json({
       message: 'Producto creado con éxito.',
@@ -98,12 +119,12 @@ router.post('/', authMiddleware, upload.single('image'), async (req, res) => {
     });
   } catch (error) {
     console.error('Error al guardar producto:', error);
-    // Asegurar que borramos el archivo temporal si ocurre un error
-    if (tempFilePath && fs.existsSync(tempFilePath)) {
-      try {
-        fs.unlinkSync(tempFilePath);
-      } catch (err) {
-        console.error('Error al borrar archivo temporal:', err);
+    // Limpiar archivos temporales en caso de fallo
+    for (const filePath of tempFilePaths) {
+      if (filePath && fs.existsSync(filePath)) {
+        try {
+          fs.unlinkSync(filePath);
+        } catch (err) {}
       }
     }
     return res.status(500).json({ message: 'Error interno al guardar el producto.' });
