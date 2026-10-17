@@ -71,9 +71,14 @@ async function initDatabase() {
         );
       `);
 
-      // Asegurar columna images para soporte de múltiples imágenes
+      // Asegurar soporte de imágenes grandes y sin truncamiento en MySQL
       try {
         await mysqlPool.query('ALTER TABLE products ADD COLUMN images LONGTEXT');
+      } catch (e) {}
+      try {
+        await mysqlPool.query('ALTER TABLE products MODIFY COLUMN imageUrl LONGTEXT');
+        await mysqlPool.query('ALTER TABLE products MODIFY COLUMN details LONGTEXT');
+        await mysqlPool.query('ALTER TABLE products MODIFY COLUMN images LONGTEXT');
       } catch (e) {}
 
       const [rows] = await mysqlPool.query('SELECT COUNT(*) as count FROM users');
@@ -204,9 +209,12 @@ function parseProduct(row) {
     images = [primaryImage];
   }
 
+  // Si existe arreglo de imágenes, usar la primera imagen completa en lugar de una potencialmente truncada
+  const resolvedPrimary = (images && images.length > 0 && images[0]) ? images[0] : (primaryImage || '');
+
   return {
     ...row,
-    imageUrl: primaryImage || (images[0] || ''),
+    imageUrl: resolvedPrimary,
     images
   };
 }
@@ -272,6 +280,51 @@ const db = {
         'INSERT INTO products (name, price, stock, details, imageUrl, images) VALUES (?, ?, ?, ?, ?, ?)'
       ).run(name, parseFloat(price), parseInt(stock), details || '', imageUrl, imagesJson);
       return { lastInsertRowid: info.lastInsertRowid };
+    }
+  },
+
+  async updateProduct(id, name, price, stock, details, imageUrl = null, images = null) {
+    const imagesJson = Array.isArray(images)
+      ? JSON.stringify(images)
+      : (typeof images === 'string' ? images : (imageUrl ? JSON.stringify([imageUrl]) : null));
+
+    if (isMysql) {
+      if (imageUrl && imagesJson) {
+        await mysqlPool.query(
+          'UPDATE products SET name = ?, price = ?, stock = ?, details = ?, imageUrl = ?, images = ? WHERE id = ?',
+          [name, parseFloat(price), parseInt(stock), details || '', imageUrl, imagesJson, id]
+        );
+      } else {
+        await mysqlPool.query(
+          'UPDATE products SET name = ?, price = ?, stock = ?, details = ? WHERE id = ?',
+          [name, parseFloat(price), parseInt(stock), details || '', id]
+        );
+      }
+      return true;
+    } else if (isPostgres) {
+      if (imageUrl && imagesJson) {
+        await pgPool.query(
+          'UPDATE products SET name = $1, price = $2, stock = $3, details = $4, imageUrl = $5, images = $6 WHERE id = $7',
+          [name, parseFloat(price), parseInt(stock), details || '', imageUrl, imagesJson, id]
+        );
+      } else {
+        await pgPool.query(
+          'UPDATE products SET name = $1, price = $2, stock = $3, details = $4 WHERE id = $5',
+          [name, parseFloat(price), parseInt(stock), details || '', id]
+        );
+      }
+      return true;
+    } else {
+      if (imageUrl && imagesJson) {
+        dbSqlite.prepare(
+          'UPDATE products SET name = ?, price = ?, stock = ?, details = ?, imageUrl = ?, images = ? WHERE id = ?'
+        ).run(name, parseFloat(price), parseInt(stock), details || '', imageUrl, imagesJson, id);
+      } else {
+        dbSqlite.prepare(
+          'UPDATE products SET name = ?, price = ?, stock = ?, details = ? WHERE id = ?'
+        ).run(name, parseFloat(price), parseInt(stock), details || '', id);
+      }
+      return true;
     }
   },
 

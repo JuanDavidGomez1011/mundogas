@@ -129,6 +129,62 @@ router.post('/', authMiddleware, uploadMiddleware, async (req, res) => {
     }
     return res.status(500).json({ message: 'Error interno al guardar el producto.' });
   }
+// PUT: Actualizar producto existente (protegido + opcionalmente nuevas fotos)
+router.put('/:id', authMiddleware, uploadMiddleware, async (req, res) => {
+  const { id } = req.params;
+  const { name, price, stock, details } = req.body;
+
+  if (!name || !price || !stock) {
+    return res.status(400).json({ message: 'Nombre, precio y stock son requeridos.' });
+  }
+
+  const files = req.files || (req.file ? [req.file] : []);
+  const tempFilePaths = files.map(f => f.path);
+
+  try {
+    const existing = await db.getProductById(id);
+    if (!existing) {
+      return res.status(404).json({ message: 'Producto no encontrado.' });
+    }
+
+    let primaryImage = null;
+    let base64Images = null;
+
+    if (files.length > 0) {
+      base64Images = [];
+      for (const file of files) {
+        const fileBuffer = fs.readFileSync(file.path);
+        const base64 = `data:${file.mimetype};base64,${fileBuffer.toString('base64')}`;
+        base64Images.push(base64);
+
+        if (fs.existsSync(file.path)) {
+          try {
+            fs.unlinkSync(file.path);
+          } catch (err) {}
+        }
+      }
+      primaryImage = base64Images[0];
+    }
+
+    await db.updateProduct(id, name, price, stock, details || '', primaryImage, base64Images);
+
+    const updated = await db.getProductById(id);
+
+    return res.json({
+      message: 'Producto actualizado con éxito.',
+      product: updated
+    });
+  } catch (error) {
+    console.error('Error al actualizar producto:', error);
+    for (const filePath of tempFilePaths) {
+      if (filePath && fs.existsSync(filePath)) {
+        try {
+          fs.unlinkSync(filePath);
+        } catch (err) {}
+      }
+    }
+    return res.status(500).json({ message: 'Error interno al actualizar el producto.' });
+  }
 });
 
 // DELETE: Eliminar producto (protegido)

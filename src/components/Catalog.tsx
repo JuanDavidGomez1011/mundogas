@@ -140,7 +140,7 @@ export const Catalog: React.FC = () => {
                     className="relative h-64 sm:h-72 w-full bg-white overflow-hidden border-b border-white/10 flex items-center justify-center p-4 cursor-pointer"
                   >
                     <img
-                      src={product.imageUrl}
+                      src={productImages[0] || product.imageUrl}
                       alt={product.name}
                       className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
                     />
@@ -405,12 +405,57 @@ export const Catalog: React.FC = () => {
                       <div className="pt-4 min-h-[140px]">
                         {activeTab === 'details' && (
                           <div className="space-y-3">
-                            <h4 className="text-xs uppercase tracking-wider text-slate-400 font-bold">
-                              Ficha Técnica y Descripción
+                            <h4 className="text-xs uppercase tracking-wider text-amber-400 font-bold flex items-center gap-1.5">
+                              <Info className="h-3.5 w-3.5" /> Ficha Técnica y Especificaciones
                             </h4>
-                            <p className="text-sm text-slate-200 leading-relaxed whitespace-pre-line bg-[#081B44]/60 p-4 rounded-2xl border border-white/5">
-                              {selectedProduct.details || 'Calentador a gas de alta eficiencia y rendimiento. Comunícate con nuestros asesores para recibir la ficha técnica detallada.'}
-                            </p>
+                            <div className="bg-[#081B44]/80 p-4 sm:p-5 rounded-2xl border border-white/10 space-y-2">
+                              {selectedProduct.details && selectedProduct.details.trim() ? (
+                                <div className="text-sm text-slate-200 leading-relaxed space-y-1.5">
+                                  {selectedProduct.details.split('\n').map((line, idx) => {
+                                    const trimmed = line.trim();
+                                    if (!trimmed) return <div key={idx} className="h-1" />;
+                                    if (trimmed.startsWith('•') || trimmed.startsWith('-') || trimmed.startsWith('*')) {
+                                      const text = trimmed.replace(/^[•\-\*]\s*/, '');
+                                      if (text.includes(':')) {
+                                        const [key, ...rest] = text.split(':');
+                                        return (
+                                          <div key={idx} className="flex items-start gap-2">
+                                            <span className="text-amber-400 font-bold shrink-0 mt-0.5">✓</span>
+                                            <div>
+                                              <strong className="text-white font-semibold">{key.trim()}:</strong>{' '}
+                                              <span className="text-slate-300">{rest.join(':').trim()}</span>
+                                            </div>
+                                          </div>
+                                        );
+                                      }
+                                      return (
+                                        <div key={idx} className="flex items-start gap-2">
+                                          <span className="text-amber-400 font-bold shrink-0 mt-0.5">✓</span>
+                                          <span className="text-slate-200">{text}</span>
+                                        </div>
+                                      );
+                                    }
+                                    if (trimmed.includes(':')) {
+                                      const [key, ...rest] = trimmed.split(':');
+                                      return (
+                                        <div key={idx} className="flex items-start gap-2">
+                                          <span className="text-amber-400 font-bold shrink-0 mt-0.5">✓</span>
+                                          <div>
+                                            <strong className="text-white font-semibold">{key.trim()}:</strong>{' '}
+                                            <span className="text-slate-300">{rest.join(':').trim()}</span>
+                                          </div>
+                                        </div>
+                                      );
+                                    }
+                                    return <p key={idx} className="text-slate-200">{trimmed}</p>;
+                                  })}
+                                </div>
+                              ) : (
+                                <p className="text-sm text-slate-300 italic">
+                                  Calentador a gas de alta eficiencia y rendimiento. Comunícate con nuestros asesores por WhatsApp para conocer la ficha técnica completa y cotizar tu instalación.
+                                </p>
+                              )}
+                            </div>
                           </div>
                         )}
 
